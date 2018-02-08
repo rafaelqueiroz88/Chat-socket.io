@@ -1,0 +1,15 @@
+{
+    "name": "Treinamento",
+    "version": "1.0.0",
+    "description": "Simples chat app",
+    "main": "server.js",
+    "scripts": {
+        "teste": "echo \"Error: no test specified"
+    },
+    "Author": "Rafael",
+    "license": "ISC",
+    "dependencies": {
+        "socket.io": "*",
+        "express": "*"
+    }
+}
