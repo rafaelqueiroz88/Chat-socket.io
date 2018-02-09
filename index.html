@@ -88,7 +88,7 @@
                             <label id="nickname"></label>
                             <br />
                             <input type="text" class="form-control" id="message" placeholder="Diga algo..."> <br />
-                            <input type="submit" class="btn btn-outline-primary" id="enviar" value="Enviar">
+                            <input type="submit" class="btn btn-outline-primary" id="enviar" value="Enviar" disabled>
                         </div>
                     </form>
                 </div>
@@ -125,6 +125,7 @@
                     $("#username").hide();
                     $("#logar").hide();
                     $("#nickname").html($username.val());
+                    $("#enviar").removeAttr("disabled");
                 });
 
                 socket.on('get users', function(data){
