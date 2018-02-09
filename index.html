@@ -114,7 +114,7 @@
                 var socket = io.connect();
                 var $userForm = $("#userForm");
                 var $username = $("#username");
-                var $users = $("#users");                
+                var $users = $("#users");
                 var $messageForm = $('#messageForm');
                 var $message = $('#message');
                 var $chat = $('#chat');
@@ -144,10 +144,10 @@
                 socket.on('new message', function(data){
                     var sender = data.msg.indexOf("disse:");
                     var substring = data.msg.substr(0, sender);
-                    
+
                     $chat.prepend('<div class="mensagem-recebida">' + data.msg + '</div>');
                 });
-                
+
             });
         </script>
 

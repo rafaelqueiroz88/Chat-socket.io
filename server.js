@@ -35,7 +35,7 @@ io.sockets.on('connection', function(socket){
 
     //Novo usuario
     socket.on('new user', function(data){
-        /*callback(true);*/
+        //callback(true); //Procurar uma forma de corrigir o erro que ocorre quando esta linha é descomentada, pois esta trata o começo da lista de usuários
         socket.username = data;
         users.push(socket.username);
         atualizarListaUsuarios();
