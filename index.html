@@ -145,7 +145,7 @@
                     var sender = data.msg.indexOf("disse:");
                     var substring = data.msg.substr(0, sender);
 
-                    $chat.prepend('<div class="mensagem-recebida">' + data.msg + '</div>');
+                    $chat.prepend('<div class="mensagem-recebida"><strong>' + data.user + '</strong> disse: ' + data.msg + '</div>');
                 });
 
             });

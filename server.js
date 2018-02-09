@@ -30,7 +30,7 @@ io.sockets.on('connection', function(socket){
     //Enviar mensagem
     socket.on('send message', function(data){
         console.log(data);
-        io.sockets.emit('new message', {msg: data})
+        io.sockets.emit('new message', {msg: data, user: socket.username});
     });
 
     //Novo usuario
