@@ -2,7 +2,7 @@
     Source: https://www.youtube.com/watch?v=tHbCkikFfDE
     localhost:3000/
     Aplicativo de socket.io
-    Parei em 21:00
+    Parei em 24:00
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +19,7 @@
         crossorigin="anonymous">
 
         <script src="/socket.io/socket.io.js"></script>
+
         <style>
             .mensagem{
                 background-color: rgba(0, 190, 230, .4);
@@ -93,18 +94,15 @@
                 });
 
                 socket.on('new message', function(data){
-                    $chat.append('<div class="mensagem">'+data.msg+'</div>');
+                    $chat.prepend('<div class="mensagem">' + data.msg + '</div>');
                 });
             });
         </script>
 
         <script>
             $(document).ready(function(){
-                $("#enviar").on("click", function(){
-                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
-                });                
+                console.log("Aplicação carregada com sucesso! Jquery pronto para uso.");
             });
         </script>
-
     </body>
 </html>
