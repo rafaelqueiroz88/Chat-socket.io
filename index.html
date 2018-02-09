@@ -21,18 +21,25 @@
         <script src="/socket.io/socket.io.js"></script>
 
         <style>
-            .mensagem{
-                background-color: rgba(230, 230, 230, .8);
-                border: solid rgba(20, 20, 20, .6) .5px;
+            .mensagem-enviada{
+                background-color: rgba(210, 210, 210, .8);
+                border-bottom: solid 1px rgba(80, 80, 80, .8);
+                border-right: solid 1px rgba(80, 80, 80, .8);
                 box-shadow: 2px 2px 2px rgba(30, 30, 30, .4);
                 padding: 20px;
-                border-radius: 6px;
+                border-radius: 9px 9px 9px 0px;
                 margin: 5px;
                 font-size: 17pt;
             }
-            .opaque{
-                background-color: rgba(20, 20, 20, .7);
-                z-index: 1;
+            .mensagem-recebida{
+                background-color: rgba(255, 255, 255, .8);
+                border-bottom: solid 1px rgba(80, 80, 80, .8);
+                border-left: solid 1px rgba(80, 80, 80, .8);
+                box-shadow: 2px 2px 2px rgba(30, 30, 30, .4);
+                padding: 20px;
+                border-radius: 9px 9px 0px 9px;
+                margin: 5px;
+                font-size: 17pt;
             }
             .chat{
                 background-image: url('http://www.gsfdcy.com/data/img/39/1570122-happiness-wallpaper.jpg');
@@ -43,34 +50,44 @@
                 max-height: 400px;
                 overflow: auto;
                 border-radius: 9px;
-                z-index: -1;
             }
         </style>
+
     </head>
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-3"></div>
-                <div class="col-6">
+                <div class="col-xs-0 col-sm-0 col-md-4 col-lg-4 col-xl-4"></div>
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
                     <h2>Mensagens</h2>
                     <br />
                     <hr />
                 </div>
             </div>
             <div class="row">
-                <div class="col col-4">                    
+                <div class="col-xs-10 col-sm-10 col-md-4 col-lg-4 col-xl-4">
                     <div class="jumbotron">
                         <h3>Online Users</h3>
-                        <ul class="list-group" id="users">
-                        </ul>
+                        <form id="userForm">
+                            <input type="text" class="form-control" id="username" placeholder="Digite o seu login aqui..."> <br />
+                            <input type="submit" class="btn btn-outline-success btn-sm btn-block" id="logar" value="Login">
+
+                            <hr />
+
+                            <ul class="list-group" id="users"></ul>
+                        </form>
                     </div>
                 </div>
-                <div class="col col-8">
-                    <div class="opaque chat" id="chat"></div>
+                <div class="col-xs-10 col-sm-10 col-md-8 col-lg-8 col-xl-8">
+                    <div class="chat" id="chat">
+                    </div>
                     <form id="messageForm">
                         <div class="form-group">
                             <label>Enter message</label>
-                            <textarea class="form-control" id="message" cols="30" rows="10"></textarea> <br />
+                            <br />
+                            <label id="nickname"></label>
+                            <br />
+                            <input type="text" class="form-control" id="message" placeholder="Diga algo..."> <br />
                             <input type="submit" class="btn btn-outline-primary" id="enviar" value="Enviar">
                         </div>
                     </form>
@@ -91,11 +108,32 @@
         crossorigin="anonymous"></script>
 
         <script>
-            $(function(){
+            $(document).ready(function(){
+                console.log("Aplicação carregada com sucesso! Jquery pronto para uso.");
+
                 var socket = io.connect();
+                var $userForm = $("#userForm");
+                var $username = $("#username");
+                var $users = $("#users");                
                 var $messageForm = $('#messageForm');
                 var $message = $('#message');
                 var $chat = $('#chat');
+
+                $userForm.submit(function(e){
+                    e.preventDefault();
+                    socket.emit('new user', $username.val());
+                    $("#username").hide();
+                    $("#logar").hide();
+                    $("#nickname").html($username.val());
+                });
+
+                socket.on('get users', function(data){
+                    var html = '<li class="list-group-item"> -- Online -- </li>';
+                    for(i = 0; i < data.length; i++){
+                        html += '<li class="list-group-item">' + data[i] + '</li>';
+                    }
+                    $users.html(html);
+                });
 
                 $messageForm.submit(function(e){
                     e.preventDefault();
@@ -104,15 +142,14 @@
                 });
 
                 socket.on('new message', function(data){
-                    $chat.prepend('<div class="mensagem">' + data.msg + '</div>');
+                    var sender = data.msg.indexOf("disse:");
+                    var substring = data.msg.substr(0, sender);
+                    
+                    $chat.prepend('<div class="mensagem-recebida">' + data.msg + '</div>');
                 });
+                
             });
         </script>
 
-        <script>
-            $(document).ready(function(){
-                console.log("Aplicação carregada com sucesso! Jquery pronto para uso.");
-            });
-        </script>
     </body>
 </html>

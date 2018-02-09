@@ -20,6 +20,9 @@ io.sockets.on('connection', function(socket){
 
     //Disconnect
     socket.on('disconnect', function(data){
+        if(!socket.username) return;
+        users.splice(users.indexOf(socket.username), 1);
+        atualizarListaUsuarios();
         connections.slice(connections.indexOf(socket), 1);
         console.log('Disconnected: %s sockets connected', connections.length);
     });
@@ -29,4 +32,18 @@ io.sockets.on('connection', function(socket){
         console.log(data);
         io.sockets.emit('new message', {msg: data})
     });
+
+    //Novo usuario
+    socket.on('new user', function(data){
+        /*callback(true);*/
+        socket.username = data;
+        users.push(socket.username);
+        atualizarListaUsuarios();
+    });
+
+    function atualizarListaUsuarios(){
+        console.log("Cheguei aqui");
+        io.sockets.emit('get users', users);
+    }
+
 });
